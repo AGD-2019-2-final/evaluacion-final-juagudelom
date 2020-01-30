@@ -2,7 +2,7 @@
 -- Pregunta
 -- ===========================================================================
 --
--- Realice una consulta que compute la cantidad de veces que aparece cada valor 
+-- Realice una consulta que compute la cantidad de countr que aparece cada valor 
 -- de la columna `t0.c5`  por año.
 --
 -- Escriba el resultado a la carpeta `output` de directorio de trabajo.
@@ -38,5 +38,14 @@ LINES TERMINATED BY '\n';
 LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+DROP TABLE IF EXISTS countr;
+CREATE TABLE countr
+AS
+SELECT t0.ano, t0.c5,count(*) FROM (
+        SELECT year(c4) as ano,c5 FROM tbl0 lateral view explode(c5) tbl0 as c5) t0 group by t0.ano, t0.c5;
+
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+    SELECT * FROM countr;
 

@@ -38,6 +38,15 @@ LINES TERMINATED BY '\n';
 LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+DROP TABLE IF EXISTS mayusc;
+
+CREATE TABLE mayusc AS SELECT split(concat_ws(':',c5),',')
+    FROM( SELECT c1, COLLECT_LIST(UPPER(c5)) c5 FROM tbl0 LATERAL VIEW explode(c5) tbl0 AS c5
+        GROUP BY C1) t0;
+
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+    SELECT * FROM mayusc;
 
 

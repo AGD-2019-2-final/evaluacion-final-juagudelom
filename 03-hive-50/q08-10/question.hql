@@ -2,8 +2,8 @@
 -- Pregunta
 -- ===========================================================================
 --
--- Escriba una consulta que para cada valor único de la columna `t0.c2,` 
--- calcule la suma de todos los valores asociados a las claves en la columna 
+-- Escriba una consulta que para cada val único de la columna `t0.c2,` 
+-- calcule la sum_unic de todos los valores asociados a las claves en la columna 
 -- `t0.c6`.
 --
 -- Escriba el resultado a la carpeta `output` de directorio de trabajo.
@@ -39,6 +39,15 @@ LINES TERMINATED BY '\n';
 LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+DROP TABLE IF EXISTS sum_unic;
+
+CREATE TABLE sum_unic AS SELECT c2, 
+            sum(val) FROM tbl0 LATERAL VIEW explode(c6) tbl0 AS clave, val
+            GROUP BY c2;
+
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+    SELECT * FROM sum_unic;
 
 

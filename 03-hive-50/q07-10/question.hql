@@ -38,6 +38,13 @@ LINES TERMINATED BY '\n';
 LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+DROP TABLE IF EXISTS unic_table;
+
+CREATE TABLE unic_table AS select c2, concat_ws(':',COLLECT_LIST(cast(c1 as STRING))) c1 from tbl0 group by c2;
+
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+    SELECT * FROM unic_table;
 
 
