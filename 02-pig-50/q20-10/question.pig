@@ -27,4 +27,9 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+fn_clr = FOREACH data GENERATE firstname, color; 
+filt = filter fn_clr by (color MATCHES '(?i)^[^b].*');
+DUMP filt;
+
+STORE filt INTO 'output' USING PigStorage(',');

@@ -28,5 +28,8 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
 
+date = FOREACH u GENERATE $3,ToDate($3,'yyyy-MM-dd');
+year = FOREACH date GENERATE ToString($1,'yyyy'),ToString($1,'yy');
+
+STORE year INTO 'output' USING PigStorage(',');

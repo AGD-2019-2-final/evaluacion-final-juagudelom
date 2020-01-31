@@ -26,4 +26,8 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+c1 = FOREACH u GENERATE $1;
+filt = FILTER c1 BY SUBSTRING(firstname, 0, 1) >= 'M';
+
+STORE filt INTO 'output';

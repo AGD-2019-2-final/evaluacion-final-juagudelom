@@ -24,5 +24,7 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
 
+btd = FOREACH u GENERATE SUBSTRING(birthday,5,7);
+
+STORE btd INTO 'output';

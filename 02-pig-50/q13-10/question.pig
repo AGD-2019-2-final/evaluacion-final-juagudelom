@@ -27,4 +27,9 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+colr = FOREACH u GENERATE color; 
+select_ = filter colr by ($0 matches '(?i)^[b].*');
+
+STORE_ INTO 'output' USING PigStorage(',');
+fs -copyToLocal output output

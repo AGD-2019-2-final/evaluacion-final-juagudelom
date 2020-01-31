@@ -19,4 +19,11 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+date = FOREACH u GENERATE $3,ToDate($3,'yyyy-MM-dd');
+year_ = FOREACH date GENERATE $0, GetYear($1);
+agrup = GROUP year_ BY $1;
+cont = FOREACH agrup GENERATE $0, COUNT(year_);
+
+STORE cont INTO 'output' USING PigStorage(',');
+fs -copyToLocal output output

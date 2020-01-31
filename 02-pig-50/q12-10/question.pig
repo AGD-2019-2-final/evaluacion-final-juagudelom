@@ -32,4 +32,8 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+srn = FOREACH u GENERATE surname; 
+filt = filter srn by ($0 matches '(?i)^[d-k].*');
+
+STORE filt INTO 'output' USING PigStorage(',');

@@ -26,4 +26,10 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+fn_clr = FOREACH u GENERATE firstname, color; 
+filt = filter fn_clr by (color == 'blue');
+filt2 = filtby (firstname MATCHES '^[Z].*');
+
+STO INTO 'output' USING PigStorage(' ');
+fs -copyToLocal output output

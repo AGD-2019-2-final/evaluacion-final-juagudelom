@@ -8,4 +8,14 @@
 fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+file = LOAD 'data.tsv' 
+       AS (f1: CHARARRAY, 
+           f2: CHARARRAY, 
+           f3: INT);
+           
+agrup = GROUP file BY f1;
+cont = FOREACH agrup GENERATE group, COUNT(file);
+STORE cont INTO 'output';
+
+fs -copyToLocal output output

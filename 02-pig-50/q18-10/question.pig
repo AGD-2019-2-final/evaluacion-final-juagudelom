@@ -26,4 +26,8 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+fn_clr = FOREACH data GENERATE firstname, color; 
+filt = FILTER fn_clr BY NOT color IN('blue','black');
+
+STORE filt INTO 'output' USING PigStorage(',');

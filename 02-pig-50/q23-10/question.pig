@@ -27,5 +27,10 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+
+c14 = FOREACH u GENERATE $1,$4;
+filt = FILTER c14 BY $1 MATCHES '.*[aeiou]';
+
+STORE filt INTO 'output' USING PigStorage(',');
+fs -copyToLocal output output
 
